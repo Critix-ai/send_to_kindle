@@ -1,0 +1,37 @@
+{
+  "name": "send_to_kindle",
+  "version": "0.0.1",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch ./src/app.ts",
+    "build": "tsc",
+    "start": "node dist/app.js",
+    "prod": "npm run build && npm run start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "GPL-3.0-only",
+  "description": "",
+  "dependencies": {
+    "@lesjoursfr/html-to-epub": "^4.4.0",
+    "@mozilla/readability": "^0.5.0",
+    "axios": "^1.7.7",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "jsdom": "^25.0.1",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.9.16",
+    "sanitize-filename": "^1.6.3",
+    "tsx": "^4.19.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/jsdom": "^21.1.7",
+    "@types/node": "^22.8.7",
+    "@types/nodemailer": "^6.4.16",
+    "@types/sanitize-filename": "^1.1.28",
+    "nodemon": "^3.1.7",
+    "typescript": "^5.6.3"
+  }
+}

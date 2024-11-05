@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Article to Kindle by CritixLabs</title>
+    <style>
+      body {
+        font-family: "Courier New", Courier, monospace;
+        line-height: 1.4;
+        max-width: 800px;
+        margin: 8px auto;
+        padding: 8px;
+        background: #f6f6ef;
+      }
+
+      .container {
+        background: #f6f6ef;
+        padding: 10px;
+      }
+
+      h1 {
+        color: #000;
+        margin: 0 0 16px 0;
+        font-size: 16px;
+      }
+
+      .setup-info {
+        border: 1px solid #828282;
+        padding: 8px;
+        margin-bottom: 16px;
+        font-size: 14px;
+      }
+
+      .setup-info code {
+        background: #fff;
+        padding: 2px 4px;
+      }
+
+      .input-group {
+        margin-bottom: 12px;
+      }
+
+      .input-group label {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 14px;
+      }
+
+      input[type="url"],
+      input[type="email"] {
+        width: 100%;
+        padding: 4px;
+        border: 1px solid #828282;
+        font-family: "Courier New", Courier, monospace;
+        font-size: 14px;
+        background: #fff;
+        margin-bottom: 8px;
+      }
+
+      input[type="url"]:focus,
+      input[type="email"]:focus {
+        outline: none;
+        border-color: #000;
+      }
+
+      button {
+        background: #1ce783;
+        color: #000;
+        border: 1px solid #828282;
+        padding: 4px 8px;
+        font-family: "Courier New", Courier, monospace;
+        font-size: 14px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background: #00b45a;
+      }
+
+      button:disabled {
+        background: #cccccc;
+        cursor: not-allowed;
+      }
+
+      .message {
+        margin-top: 12px;
+        padding: 8px;
+        font-size: 14px;
+        border: 1px solid #828282;
+        display: none;
+      }
+
+      .success {
+        background: #dfd;
+        display: block;
+      }
+
+      .error {
+        background: #fdd;
+        display: block;
+      }
+
+      .loading {
+        background: #ffffd1;
+        display: block;
+      }
+
+      #credits {
+        font-size: 12px;
+        margin-top: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Article to Kindle by CritixLabs</h1>
+
+      <div class="setup-info">
+        <p>guide</p>
+        <ol>
+          <li>
+            add <code>send@email.com</code> to your kindle approved email list
+            (<a
+              href="https://www.amazon.com/hz/mycd/myx#/home/settings/payment"
+              target="_blank"
+              >amazon preferences</a
+            >)
+          </li>
+          <li>enter your kindle email below</li>
+        </ol>
+
+        <p>notes:</p>
+        <ul>
+          <li>kindle email should end with <code>@kindle.com</code></li>
+          <li>article should be publicly accessible</li>
+          <li>article should not be behind a paywall</li>
+          <li>
+            your kindle email will be saved in your browser
+            <code>localStorage</code>, for future usage
+          </li>
+          <li>we don't save any of your info on the server</li>
+        </ul>
+      </div>
+
+      <div class="input-group">
+        <label for="kindleEmail">kindle email:</label>
+        <input
+          type="email"
+          id="kindleEmail"
+          placeholder="your-kindle@kindle.com"
+          autocomplete="on"
+        />
+      </div>
+
+      <div class="input-group">
+        <label for="articleUrl">article url:</label>
+        <input
+          type="url"
+          id="articleUrl"
+          placeholder="article url"
+          autocomplete="off"
+        />
+      </div>
+
+      <button id="sendButton">send</button>
+      <div id="message" class="message"></div>
+
+      <p id="credits">
+        v0.0.1 • by
+        <a href="https://critixlabs.fi" target="_blank">CritixLabs</a> •
+        <a href="https://github.com/critixlabs/send-to-kindle" target="_blank"
+          >GitHub</a
+        >
+      </p>
+    </div>
+
+    <script>
+      const urlInput = document.getElementById("articleUrl");
+      const emailInput = document.getElementById("kindleEmail");
+      const sendButton = document.getElementById("sendButton");
+      const messageDiv = document.getElementById("message");
+
+      // Load saved kindle email if exists
+      if (localStorage.getItem("kindleEmail")) {
+        emailInput.value = localStorage.getItem("kindleEmail");
+      }
+
+      function showMessage(text, type) {
+        messageDiv.textContent = text;
+        messageDiv.className = `message ${type}`;
+      }
+
+      async function sendArticle() {
+        const url = urlInput.value.trim();
+        const email = emailInput.value.trim();
+
+        if (!url) {
+          showMessage("please enter a valid url", "error");
+          return;
+        }
+
+        if (!email) {
+          showMessage("please enter your kindle email", "error");
+          return;
+        }
+
+        if (!email.endsWith("@kindle.com")) {
+          showMessage("please enter a valid kindle email address", "error");
+          return;
+        }
+
+        try {
+          sendButton.disabled = true;
+          showMessage("processing article...", "loading");
+
+          // Save kindle email for future use
+          localStorage.setItem("kindleEmail", email);
+
+          const response = await fetch("/send-article", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ url, kindleEmail: email }),
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            showMessage(`success! "${data.title}" sent to kindle`, "success");
+            urlInput.value = "";
+          } else {
+            throw new Error(data.message || "failed to send article");
+          }
+        } catch (error) {
+          showMessage(error.message || "error sending article", "error");
+        } finally {
+          sendButton.disabled = false;
+        }
+      }
+
+      sendButton.addEventListener("click", sendArticle);
+
+      // Handle Enter key for both inputs
+      [urlInput, emailInput].forEach((input) => {
+        input.addEventListener("keypress", (e) => {
+          if (e.key === "Enter") {
+            sendArticle();
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
