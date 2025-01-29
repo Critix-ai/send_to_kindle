@@ -3,7 +3,52 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Article to Kindle by CritixLabs</title>
+    <title>
+      Send Articles to Kindle - Free Web Article to Kindle Converter |
+      CritixLabs
+    </title>
+
+    <!-- Primary Meta Tags -->
+    <meta
+      name="description"
+      content="Convert and send web articles to your Kindle with one click. Free tool to deliver web content directly to your Kindle e-reader. No ads, no tracking, open source."
+    />
+    <meta
+      name="keywords"
+      content="kindle article converter, send to kindle, article to kindle, kindle reader tool, web to kindle, kindle content converter"
+    />
+    <meta name="author" content="CritixLabs" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://critixlabs.fi/article-to-kindle" />
+    <meta
+      property="og:title"
+      content="Send Articles to Kindle - Free Web Article Converter"
+    />
+    <meta
+      property="og:description"
+      content="Convert and send web articles to your Kindle with one click. Free tool to deliver web content directly to your Kindle e-reader."
+    />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:url"
+      content="https://critixlabs.fi/article-to-kindle"
+    />
+    <meta
+      name="twitter:title"
+      content="Send Articles to Kindle - Free Web Article Converter"
+    />
+    <meta
+      name="twitter:description"
+      content="Convert and send web articles to your Kindle with one click. Free tool to deliver web content directly to your Kindle e-reader."
+    />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://critixlabs.fi/article-to-kindle" />
+
     <style>
       body {
         font-family: "Courier New", Courier, monospace;
@@ -16,7 +61,6 @@
 
       .container {
         background: #f6f6ef;
-        padding: 10px;
       }
 
       h1 {
@@ -113,67 +157,103 @@
     </style>
   </head>
   <body>
-    <div class="container">
-      <h1>Article to Kindle by CritixLabs</h1>
+    <header>
+      <nav aria-label="Main navigation">
+        <a href="https://sendtokindle.critixlabs.fi" class="logo"
+          ><h1>Articles to Kindle by CritixLabs</h1></a
+        >
+      </nav>
+    </header>
 
-      <div class="setup-info">
-        <p>guide</p>
-        <ol>
-          <li>
-            add <code>sendtokindle@critix.ai</code> to your kindle approved
-            email list (<a
-              href="https://www.amazon.com/hz/mycd/myx#/home/settings/payment"
-              target="_blank"
-              >amazon preferences</a
-            >)
-          </li>
-          <li>enter your kindle email below</li>
-        </ol>
+    <main>
+      <article class="container">
+        <section class="setup-info">
+          <h2>guide</h2>
+          <ol>
+            <li>
+              add <code>sendtokindle@critix.ai</code> to your kindle approved
+              email list (<a
+                href="https://www.amazon.com/hz/mycd/myx#/home/settings/payment"
+                target="_blank"
+                >amazon preferences</a
+              >)
+            </li>
+            <li>enter your kindle email below</li>
+          </ol>
 
-        <p>notes:</p>
-        <ul>
-          <li>kindle email should end with <code>@kindle.com</code></li>
-          <li>article should be publicly accessible</li>
-          <li>article should not be behind a paywall</li>
-          <li>
-            your kindle email will be saved in your browser
-            <code>localStorage</code>, for future usage
-          </li>
-          <li>we don't save any of your info on the server</li>
-        </ul>
-      </div>
+          <h3>notes:</h3>
+          <ul>
+            <li>kindle email should end with <code>@kindle.com</code></li>
+            <li>article should be publicly accessible</li>
+            <li>article should not be behind a paywall</li>
+            <li>
+              your kindle email will be saved in your browser
+              <code>localStorage</code>, for future usage
+            </li>
+            <li>we don't save any of your info on the server</li>
+          </ul>
+        </section>
 
-      <div class="input-group">
-        <label for="kindleEmail">kindle email:</label>
-        <input
-          type="email"
-          id="kindleEmail"
-          placeholder="your-kindle@kindle.com"
-          autocomplete="on"
-        />
-      </div>
+        <form
+          id="kindleForm"
+          class="kindle-form"
+          aria-label="Article to Kindle conversion form"
+        >
+          <div class="input-group">
+            <label for="kindleEmail">Kindle Email Address:</label>
+            <input
+              type="email"
+              id="kindleEmail"
+              name="kindleEmail"
+              placeholder="your-kindle@kindle.com"
+              autocomplete="email"
+              required
+              aria-required="true"
+            />
+          </div>
 
-      <div class="input-group">
-        <label for="articleUrl">article url:</label>
-        <input
-          type="url"
-          id="articleUrl"
-          placeholder="article url"
-          autocomplete="off"
-        />
-      </div>
+          <div class="input-group">
+            <label for="articleUrl">Article URL:</label>
+            <input
+              type="url"
+              id="articleUrl"
+              name="articleUrl"
+              placeholder="https://example.com/article"
+              autocomplete="off"
+              required
+              aria-required="true"
+            />
+          </div>
 
-      <button id="sendButton">send</button>
-      <div id="message" class="message"></div>
+          <button type="submit" id="sendButton">Send to Kindle</button>
+          <div
+            id="message"
+            class="message"
+            role="alert"
+            aria-live="polite"
+          ></div>
+        </form>
+      </article>
+    </main>
 
+    <footer>
       <p id="credits">
-        v0.0.1 • by
-        <a href="https://critixlabs.fi" target="_blank">CritixLabs</a> •
-        <a href="https://github.com/Critix-ai/send_to_kindle" target="_blank"
+        v 0.0.2 • Created by
+        <a
+          href="https://critixlabs.fi"
+          target="_blank"
+          rel="noopener noreferrer"
+          >CritixLabs</a
+        >
+        •
+        <a
+          href="https://github.com/Critix-ai/send_to_kindle"
+          target="_blank"
+          rel="noopener noreferrer"
           >GitHub</a
         >
       </p>
-    </div>
+    </footer>
 
     <script>
       const urlInput = document.getElementById("articleUrl");
@@ -250,6 +330,28 @@
           }
         });
       });
+    </script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Article to Kindle Converter",
+        "applicationCategory": "UtilityApplication",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "€"
+        },
+        "creator": {
+          "@type": "Organization",
+          "name": "CritixLabs",
+          "url": "https://critixlabs.fi"
+        },
+        "description": "Convert and send web articles to your Kindle with one click. Free tool to deliver web content directly to your Kindle e-reader.",
+        "operatingSystem": "All",
+        "browserRequirements": "Requires JavaScript"
+      }
     </script>
   </body>
 </html>
